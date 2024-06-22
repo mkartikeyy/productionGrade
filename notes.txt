@@ -1,2 +1,3 @@
 setting up the project
 nodemon installed as dev dependency `npm i -D nodemon`
+installed prettier as a dev dependency to ensure consistency in the project 
