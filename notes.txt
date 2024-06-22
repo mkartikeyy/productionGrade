@@ -1,0 +1,2 @@
+setting up the project
+nodemon installed as dev dependency `npm i -D nodemon`
