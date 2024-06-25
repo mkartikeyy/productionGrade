@@ -16,5 +16,8 @@ network setting : add the ip to interact with
 - PRETTIER
 - cors 
 - cookie-parser
+- mongoose aggregate paginate v2 (to write queries for mongo)
+- bcrypt (helps to hash the password)
+- jwt (json web tokens, based on cryptography secure transfer of json data)
 ## Custom error and api
 creating a utility to reduce the use of wrapper using `asyncHandles.js`
