@@ -20,6 +20,7 @@ network setting : add the ip to interact with
 - bcrypt (helps to hash the password)
 - jwt (json web tokens, based on cryptography secure transfer of json data)
 - multer (to upload files)\
+
 ## learning-documenting
 creating a utility to reduce the use of wrapper using `asyncHandles.js`\
 learnt how to upload a file from local path to the cloudinary service and retrieve url `cloudinary.js`
