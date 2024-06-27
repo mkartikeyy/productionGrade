@@ -5,15 +5,17 @@ import {User} from '../models/user.model.js';
 import { cloudinayUpload } from "../utils/cloudinary.js";
 
 const registerUser = asyncHandler( async(req, res)=>{
+
+    // console.log("body\n",req.body);
     const {username, email, fullName, password} = req.body
-    console.log("username:", email)
+    // console.log("username:", email)
     //validation
     if([username, email, fullName, password].some((field)=>field?.trim()===""))
     {
         throw new apierror(400, "all fields are required");
     }
     //checking if the user exists
-    const existingUser = User.findOne({
+    const existingUser = await User.findOne({
         $or: [{username}, {email}]
     })
 
@@ -23,7 +25,13 @@ const registerUser = asyncHandler( async(req, res)=>{
 
     //uploading images 
     const avatarImgLocalPath = req.files?.avatar[0]?.path
-    const coverImgLocalPath = req.files?.coverImage[0]?.path
+    // const coverImgLocalPath = req.files?.coverImage[0]?.path
+
+    let coverImgLocalPath;
+    if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0){
+        coverImgLocalPath= req.files.coverImage[0].path;
+    }
+
     //check avatar exists or not 
     if(!avatarImgLocalPath){
         throw new apierror(400,"avatar needed")
@@ -44,7 +52,8 @@ const registerUser = asyncHandler( async(req, res)=>{
         username: username.toLowerCase()
     })
     //checking is user is created
-    const createdUser = await user.findById(user._id).select("-password -refreshToken")
+    const createdUser = await User.findById(user._id).select("-password -refreshToken")
+
     if(!createdUser){throw new apierror(500, "Something went wrong while registering the user")}
 
 
@@ -55,3 +64,44 @@ const registerUser = asyncHandler( async(req, res)=>{
 })
 
 export {registerUser}
+
+
+/*
+body data: res.body
+ [Object: null prototype] {
+  fullName: 'charu joshi',
+  email: 'cj4567@srmist.edu.inn',
+  password: 'charujoshi',
+  username: 'cj6969'
+}
+
+
+
+file data: res.file
+ [Object: null prototype] {
+  avatar: [
+    {
+      fieldname: 'avatar',
+      originalname: 'WIN_20240624_20_39_58_Pro.jpg',
+      encoding: '7bit',
+      mimetype: 'image/jpeg',
+      destination: './public/temp',
+      filename: 'avatar',
+      path: 'public\\temp\\avatar',
+      size: 156347
+    }
+  ],
+  coverImage: [
+    {
+      fieldname: 'coverImage',
+      originalname: 'Screenshot 2024-05-09 115128.png',
+      encoding: '7bit',
+      mimetype: 'image/png',
+      destination: './public/temp',
+      filename: 'coverImage',
+      path: 'public\\temp\\coverImage',
+      size: 417001
+    }
+  ]
+}
+ */

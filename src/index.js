@@ -3,7 +3,7 @@ import dbconn from "./db/dataconn.js";
 import {app} from './app.js'
 
 dotenv.config({
-    path: './env'
+    path: './.env'
 })
 
 dbconn()
