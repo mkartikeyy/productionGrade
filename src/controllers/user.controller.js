@@ -180,7 +180,77 @@ const refreshAccessToken = asyncHandler(async (req, res)=>{
 
 })
 
-export {registerUser, loginUser, logoutUser, refreshAccessToken}
+const changePassword = asyncHandler(async(req, res)=>{
+  const {oldPassword, newPassword} = req.body
+  //req would have have user, auth middleware
+  const user = await User.findById(req.user?._id)
+  const verifyPass = await user.isPassCorrect(oldPassword)
+
+  if(!verifyPass){throw new apierror(400, "oldPassword invalid")}
+
+  user.password = newPassword
+  await user.save({validateBeforeSave:false})
+
+  return res
+  .status(200)
+  .json(new apires(
+      200,
+      req.user,
+      "password changed"
+  ) 
+  )
+})
+
+const getCurrentUser = asyncHandler(async(req, res)=>{
+  return res.status(200)
+  .json(
+    new apires(
+      200,
+      res.user,
+      "current user retrieved"
+    )
+  )
+})
+
+const updateDetails = asyncHandler(async(req, res)=>{
+  //can also include a password check but not now!!
+  // req.body also
+  const {fullName, email} = req.body
+  if(!(fullName && email)){throw new apierror(400, "both fields required")}
+  const user = await User.findByIdAndUpdate(req.user?._id,
+    {
+      $set: {
+        fullName,
+        email: email
+      }
+    },
+    {new:true}
+  ).select("-password")
+  if(!user){throw new apierror(400, "user does not exist")}
+
+  return res.status(200)
+  .json(new apires(
+    200,
+    user,
+    "details Updated"
+  ))
+})
+// write controllers to update avatar and cover image 
+
+
+
+
+
+
+export {
+  registerUser,
+  loginUser,
+  logoutUser,
+  refreshAccessToken,
+  changePassword,
+  getCurrentUser,
+  updateDetails
+}
 
 
 /*

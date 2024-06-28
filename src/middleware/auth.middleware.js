@@ -2,7 +2,6 @@ import { apierror } from "../utils/apierror.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
-import cookieParser from "cookie-parser";
 
 export const verifyJwt = asyncHandler(async(req, _, next)=>{
     try {
