@@ -24,3 +24,7 @@ network setting : add the ip to interact with
 ## learning-documenting
 creating a utility to reduce the use of wrapper using `asyncHandles.js`\
 learnt how to upload a file from local path to the cloudinary service and retrieve url `cloudinary.js`
+
+
+##### notes
+- access token (shorter life span) refesh token long lived 
